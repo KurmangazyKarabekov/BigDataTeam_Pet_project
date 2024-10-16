@@ -1,3 +1,7 @@
 FROM jupyter/scipy-notebook:2023-06-01
 
-RUN pip install --upgrade pip psycopg2-binary openpyxl xgboost catboost
+COPY requirements.txt /tmp/
+
+RUN pip install --upgrade pip \
+    && pip install -r /tmp/requirements.txt
+
