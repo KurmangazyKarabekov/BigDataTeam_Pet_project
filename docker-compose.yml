@@ -1,13 +1,18 @@
 version: '3'
 services:
-  jupiter:
+  app:
     build:
       context: .
-      dockerfile: DockerFile
+      dockerfile: DockerFile  
     volumes:
-      - ./:/home/jovyan/
+      - ./:/app 
     ports:
-      - "8888:8888"
+      - "8888:8888"  
+      - "5001:5000"  
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     depends_on:
       - db
 
@@ -17,19 +22,21 @@ services:
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_DB =  postgres
-      - POSTGRES_USER =  postgres
-      - POSTGRES_PASSWORD =  postgres
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
       - "POSTGRES_HOST_AUTH_METHOD=trust"
     volumes:
       - pgdata:/var/lib/postgresql/data/
+      
   adminer:
     image: adminer
     restart: always
     depends_on:
       - db
     ports:
-      - 8081:8080
+      - "8081:8080"
+      
   pgadmin:
     image: dpage/pgadmin4
     restart: always
